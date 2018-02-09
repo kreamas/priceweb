@@ -1,0 +1,108 @@
+{% extends 'price/base.html' %}
+
+  {% block content %}
+            
+            
+           <!-- Content -->
+           <div class = "content" id = "content">
+            
+            
+            
+                <div id="bar-price">
+
+                    <table class="columns">
+                      <tr>
+                        <td><div class="grafico" id="tienda_1"></div></td>
+                        <td><div class="grafico" id="tienda_2"></div></td>
+                      </tr>
+
+                      <tr>
+                        <td><div class="grafico" id="tienda_3"></div></td>
+                        <td><div class="grafico" id="tienda_4"></div></td>
+                      </tr>
+
+                      <tr>
+                        <td><div class="grafico" id="tienda_5"></div></td>
+                        <td><div class="grafico" id="tienda_6"></div></td>
+                      </tr>
+
+                      <tr>
+                        <td><div class="grafico" id="tienda_7"></div></td>
+                        <td><div class="grafico" id="tienda_8"></div></td>
+                      </tr>
+
+                      <tr>
+                        <td><div class="grafico" id="tienda_9"></div></td>
+                        <td><div class="grafico" id="tienda_10"></div></td>
+                      </tr>
+
+                    </table>    
+
+                </div>						
+            
+            
+            </div><!-- Fin del content -->
+            
+
+
+            <!-- Side Bar -->
+    
+            <div class = "sidebar1" id = "sidebar">
+
+                <form  method="get" action = "{% url 'pricescrap' %}" id = "web_scrap">
+                    <div>
+                        
+                        <p>Selecciona las tiendas</p>
+                        <p>
+                          <SELECT name="tienda" multiple = "multiple" SIZE=6 id="tienda" class = "listillas"> 
+                            <OPTION VALUE="FARMACIAS SAN PABLO">FARMACIAS SAN PABLO</OPTION>
+                            <OPTION VALUE="FARMACIAS DEL AHORRO">FARMACIAS DEL AHORRO</OPTION>
+                            <OPTION VALUE="HEB">HEB</OPTION>
+                            <OPTION VALUE="FARMASMART">FARMASMART</OPTION> 
+                            <OPTION VALUE="FARMATODO">FARMATODO</OPTION> 
+                            <OPTION VALUE="WALMART">WALMART</OPTION> 
+                            <OPTION VALUE="FARMALISTO">FARMALISTO</OPTION> 
+                            <OPTION VALUE="CHEDRAUI">CHEDRAUI</OPTION> 
+                          </SELECT>
+                        </p>
+
+                        <p></p>
+
+                        <p> Escribe los productos separados por coma "," </p>
+                        <input type = "text" name = "productos" />
+
+                        <p></p>
+                        
+                        <p> Elige los productos monitoreados </p>
+                        <p>
+                          <SELECT name="prod_cliente" multiple = "multiple" SIZE=6 id="prod-cliente" class = "listillas"> 
+                            <OPTION VALUE="ATACAND">ATACAND</OPTION>
+                            <OPTION VALUE="MICARDIS">MICARDIS</OPTION>
+                            <OPTION VALUE="LINICIN">LINICIN</OPTION>
+                            <OPTION VALUE="SENSIBIT">SENSIBIT</OPTION> 
+                            <OPTION VALUE="METEOSPASMYL">IPRIKENE</OPTION> 
+                          </SELECT>
+                        </p>
+            
+            
+                        <input type = "submit" value="buscar" id = "staz" name = "staz"/>
+                        
+                    </div>
+            
+                </form>
+
+            </div><!-- Fin de Side Bar -->            
+            
+    {% endblock %}
+
+    {% block javascript %}
+      <script>
+        $("#titulo").html("PRICE ANALYSIS TOOL<br /><span id='tspan'>PRICE ANALYSIS</span>");
+      </script>
+    {% endblock %}
+
+
+		</div> <!-- Del wrapper -->
+
+    </body>
+</html>

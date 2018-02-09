@@ -1,0 +1,115 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta name = "viewport" content = "initial-scale=2.0, width=device-width"/>
+    <meta charset = utf-8>
+    
+            
+        <style>
+              
+          Html, body{
+            height:100%;
+              margin:0px;
+              padding:0px;
+          }
+          .grandParentContaniner{
+                  display:table;
+                  height:100%;
+                  margin: 0 auto;
+          }
+          .parentContainer{
+              display:table-cell;
+              vertical-align:middle;  
+          }
+          .parentContainer #loginForm{
+              background:#ddd;
+              border:1px solid #eee;
+              padding:10px; 
+              width:300px;  /*  your login form width */
+          }
+
+        </style>
+    
+    
+            
+        <script
+          src="https://code.jquery.com/jquery-3.2.1.min.js"
+          integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+          crossorigin="anonymous"></script>
+        
+        <script
+          src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+          integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+          crossorigin="anonymous"></script>
+          
+        <!--<script type="text/javascript" src="jquery.min.js"></script>-->
+        <!--<script type="text/javascript" src="jquery-ui.min.js"></script>-->
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*-->
+        
+        <script type = "text/javascript" src = "{% static 'js/ajax.js' %}"></script>
+        <script type = "text/javascript" src = "{% static 'js/priceScrap.js' %}"></script>
+        <script type = "text/javascript" src = "{% static 'js/jquery-ajax-localstorage-cache.js' %}"></script>
+
+        
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.2/js/tabulator.min.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+    
+    
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">        
+        <link rel = "stylesheet" href = "{% static 'css/general.css' %}">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.2/css/tabulator.min.css" rel="stylesheet">      
+
+      <title>FFAS</title>
+    </head>
+    
+    <body>
+    
+      <div id = "wrapper">
+            <div class = "page-header", id="header">
+            
+                {% if user.is_authenticated %}
+                  <p class="top-menu">Hola {{ user.username }}<small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+                {% else %}
+                  <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+                {% endif %}
+            
+                <table class="titulos" cellpadding="15">
+                  <tr>
+                    <td><img src="{% static "images/kreamas.png" %}" alt="Mi imagen" name="Insert_logo" width="180" height="90" id="Insert_logo" style="background-color: #FFFFFF; display:block;" /></td>
+                    <td class = 'subtis'><h1 id="titulo">WELCOME TO PRICE ANALYSIS SYSTEM</h1></td>
+                  </tr>
+
+                </table>    
+
+              <div id = "navigation">
+                  <ul>
+                      <li><a href = "{% url 'priceAnalysis' %}">Price Analysis</a></li>
+                  </ul>
+              </div>
+            
+
+
+            {% block content %}
+            {% endblock %}
+            
+            {% block javascript %}
+            {% endblock %}
+
+
+
+    </div> <!-- Del wrapper -->
+
+    </body>
+</html>

@@ -118,6 +118,9 @@ def consultaPrecios(request):
     sku = request.GET.getlist('sku')
     
     df = pd.read_sql('select * from precios', con = dbConect.ehost())    
+    df['fecha'] = pd.to_datetime(df['fecha'])    
+    df['fecha'] = df['fecha'].apply(lambda x: x.date())                        
+    
     
 
     # Filtro fechas inicial y final    
@@ -216,9 +219,6 @@ def consultaPrecios(request):
     tablon = tablon[:-1]     
     tablon = tablon.round(2)
     
-    print(tablon)
-    
-    
     ncolumna = list(tablon)
     lista = list(set(tablon[ncolumna[0]].tolist()))
 
@@ -236,6 +236,7 @@ def consultaPrecios(request):
         #Cambiamos las fechas a cadenas
         
         columns = list(t1)
+        
         
         for j in xrange(1, len(columns)):
             deits = unicode(columns[j])

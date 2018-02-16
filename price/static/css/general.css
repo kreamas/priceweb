@@ -37,7 +37,6 @@
 		margin-right: 10px;
 		margin-left: 10px;
 		float: left;
-		background-color: #fe9c00;
 		width: 220px;
 	}
 	
@@ -200,23 +199,27 @@ html {
     margin-right: 20px;
 }
 
+.botones{
+	width: 100%;
+}
+
 .todos {
 	background-color: #4CAF50;
 	color: white;
-	width: 100px;
+	width: 100%;
 }
 
 .ninguno {
 	background-color: #f44336;
 	color: white;
-	width: 100px;
+	width: 100%;
 }
 
 
 .refresca {
 	background-color: #27427e;
 	color: white;
-	width: 100px;
+	width: 100%;
 }
 
 .listillas {
@@ -256,3 +259,4 @@ html {
 	color: 	#27427e;
 	font-weight: bold;
 }
+

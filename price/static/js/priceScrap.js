@@ -11,6 +11,7 @@ $(document).ready(function(){
 
 
 
+
 	$("#web_scrap").submit(function(e){
 		e.preventDefault();
 
@@ -82,6 +83,7 @@ $(document).ready(function(){
             
 		});
 	});
+
 
 
 	

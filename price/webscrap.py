@@ -12,6 +12,11 @@ from dbConect import dbConect
 import datetime
 
 
+#cambio = pd.read_csv("C:/KREA MAS/DATOS PARA WEB PRICE/cambio.csv")
+#cambio.to_sql(name = 'catcambio', con = dbConect.ehost(), if_exists = 'replace', index = False, chunksize = 1000)
+#print(cambio.head(5))
+
+
 #catalogos = pd.read_csv("C:/KREA MAS/DATOS PARA WEB PRICE/catalogos.csv")
 #catalogos.to_sql(name = 'catdosis', con = dbConect.ehost(), if_exists = 'replace', index = False, chunksize = 1000)
 #print(catalogos.head(5))
@@ -155,7 +160,7 @@ del catDosis
 
 print(oDF.head(10))        
 oDF.to_csv('C:/KREA MAS/DATOS PARA WEB PRICE/FARMACIAS.csv', sep='|')
-oDF.to_sql(name = 'precios', con = dbConect.ehost(), if_exists = 'replace', index = False, chunksize = 1000)
+oDF.to_sql(name = 'precios', con = dbConect.ehost(), if_exists = 'append', index = False, chunksize = 1000)
 
 del dfPrice
 del catDF

@@ -6,41 +6,88 @@
            <!-- Content -->
            <div class = "content" id = "content">
             
-            
-            
-                <div id="bar-price">
+              <table class = "divisiones">
 
-                    <table class="columns">
-                      <tr>
-                        <td><div class="grafico" id="tienda_1"></div></td>
-                        <td><div class="grafico" id="tienda_2"></div></td>
-                      </tr>
+                <tr id = "head-options">
 
-                      <tr>
-                        <td><div class="grafico" id="tienda_3"></div></td>
-                        <td><div class="grafico" id="tienda_4"></div></td>
-                      </tr>
+                  <h3>Chart Options</h3>
 
-                      <tr>
-                        <td><div class="grafico" id="tienda_5"></div></td>
-                        <td><div class="grafico" id="tienda_6"></div></td>
-                      </tr>
+                  <div id = "opciones">
 
-                      <tr>
-                        <td><div class="grafico" id="tienda_7"></div></td>
-                        <td><div class="grafico" id="tienda_8"></div></td>
-                      </tr>
+                    <td style="padding:0 15px 0 15px;"">
 
-                      <tr>
-                        <td><div class="grafico" id="tienda_9"></div></td>
-                        <td><div class="grafico" id="tienda_10"></div></td>
-                      </tr>
+                      <label>Initial date :</label><br>
+                      <input type="text" name="initial-date" id="initial-date" style = "height: 25px;"/>
 
-                    </table>    
+                    </td>
 
-                </div>						
-            
-            
+                    <td style="padding:0 15px 0 15px;">
+
+                      <label>Last date :</label><br>
+                      <input type="text" name="last-date" id="last-date" style = "height: 25px;"/>
+
+                    </td>
+
+                    <td style="padding:0 15px 0 15px;">
+
+                      <label>Chart style :</label><br>
+                      <SELECT name="chart-style" SIZE=1 id="chart-style" class = "listillas" style = "height: 27px;"> 
+                        <OPTION VALUE="LINE">LINE</OPTION>
+                        <OPTION VALUE="BAR">BAR</OPTION>
+                      </SELECT>
+
+                    </td>
+
+                    <td style="padding:0 15px 0 15px;">
+
+                      <label>Measure :</label><br>
+                      <SELECT name="measure" SIZE=1 id="measure" class = "listillas" style = "height: 27px;"> 
+                        <OPTION VALUE="LOCAL PRICE">LOCAL PRICE</OPTION>
+                        <OPTION VALUE="SINGLE DOSES">SINGLE DOSES</OPTION>
+                        <OPTION VALUE="DOT">DOT</OPTION>
+                      </SELECT>
+
+                    </td>
+
+
+                    <td style="padding:0 15px 0 15px;">
+
+                      <label>Item :</label><br>
+                      <SELECT name="nom-item" SIZE=1 id="nom-item" class = "listillas" style = "height: 27px;"> 
+                        <OPTION VALUE="MARKET">MARKET</OPTION>
+                        <OPTION VALUE="LABORATORY">LABORATORY</OPTION>
+                        <OPTION VALUE="FAMILY">FAMILY</OPTION>
+                        <OPTION VALUE="BRAND">BRAND</OPTION>
+                        <OPTION VALUE="SKU">SKU</OPTION>
+                      </SELECT>
+
+                    </td>
+
+
+                    <td style="padding:0 15px 0 15px;">
+
+                      <label>Chart views :</label><br>
+                      <SELECT name="chart-views" SIZE=1 id="chart-views" class = "listillas" style = "height: 27px;"> 
+                        <OPTION VALUE="ITEM - STORE">ITEM - STORE</OPTION>
+                        <OPTION VALUE="STORE - ITEM">STORE - ITEM</OPTION>
+                      </SELECT>
+
+                    </td>
+
+
+
+                  </div>
+
+                </tr>
+
+              </table>
+
+
+
+              <div id="graf-price">
+
+              </div>
+
             </div><!-- Fin del content -->
             
 
@@ -49,56 +96,152 @@
     
             <div class = "sidebar1" id = "sidebar">
 
-                <form  method="get" action = "{% url 'pricescrap' %}" id = "web_scrap">
-                    <div>
-                        
-                        <p>Selecciona las tiendas</p>
-                        <p>
-                          <SELECT name="tienda" multiple = "multiple" SIZE=6 id="tienda" class = "listillas"> 
-                            <OPTION VALUE="FARMACIAS SAN PABLO">FARMACIAS SAN PABLO</OPTION>
-                            <OPTION VALUE="FARMACIAS DEL AHORRO">FARMACIAS DEL AHORRO</OPTION>
-                            <OPTION VALUE="HEB">HEB</OPTION>
-                            <OPTION VALUE="FARMASMART">FARMASMART</OPTION> 
-                            <OPTION VALUE="FARMATODO">FARMATODO</OPTION> 
-                            <OPTION VALUE="WALMART">WALMART</OPTION> 
-                            <OPTION VALUE="FARMALISTO">FARMALISTO</OPTION> 
-                            <OPTION VALUE="CHEDRAUI">CHEDRAUI</OPTION> 
-                          </SELECT>
-                        </p>
+                <div>
+                      
 
-                        <p></p>
 
-                        <p> Escribe los productos separados por coma "," </p>
-                        <input type = "text" name = "productos" />
+                  <form method = "get" action = "{% url 'refreshTienda' %}" id = "formTienda">
+                    <p class="textoLista">STORES</p>
+                    <p>
+                      <SELECT name="tienda" multiple = "multiple" SIZE=6 id="tienda" class = "listillas"> 
+                        <OPTION VALUE="FARMACIAS SAN PABLO">FARMACIAS SAN PABLO</OPTION>
+                        <OPTION VALUE="FARMACIAS DEL AHORRO">FARMACIAS DEL AHORRO</OPTION>
+                        <OPTION VALUE="HEB">HEB</OPTION>
+                        <OPTION VALUE="FARMASMART">FARMASMART</OPTION> 
+                        <OPTION VALUE="FARMATODO">FARMATODO</OPTION> 
+                        <OPTION VALUE="WALMART">WALMART</OPTION> 
+                        <OPTION VALUE="FARMALISTO">FARMALISTO</OPTION> 
+                        <OPTION VALUE="CHEDRAUI">CHEDRAUI</OPTION> 
+                      </SELECT>
+                    </p>
 
-                        <p></p>
-                        
-                        <p> Elige los productos monitoreados </p>
-                        <p>
-                          <SELECT name="prod_cliente" multiple = "multiple" SIZE=6 id="prod-cliente" class = "listillas"> 
-                            <OPTION VALUE="ATACAND">ATACAND</OPTION>
-                            <OPTION VALUE="MICARDIS">MICARDIS</OPTION>
-                            <OPTION VALUE="LINICIN">LINICIN</OPTION>
-                            <OPTION VALUE="SENSIBIT">SENSIBIT</OPTION> 
-                            <OPTION VALUE="METEOSPASMYL">IPRIKENE</OPTION> 
-                          </SELECT>
-                        </p>
-            
-            
-                        <input type = "submit" value="buscar" id = "staz" name = "staz"/>
-                        
+
+                    <table class="botones" cellpadding="15">
+                      <tr>
+                        <td><input type = "button" value = "ALL" id = "bTiendaAll" class = "todos"/></td>
+                        <td><input type = "button" value = "NONE" id = "bTiendaNone" class = "ninguno"/></td>
+                        <td><input type = "submit" value = "REFRESH" id = "bTiendaRef" class = "refresca"/></td>
+                      </tr>
+
+                    </table>    
+
+                  </form>
+
+                  <br>
+                  <br>
+
+                  <form method = "get" action = "{% url 'refreshMercado' %}" id = "formMercado">
+
+                    <div id = "divMercado">
+                      <p class="textoLista">MARKETS</p>
+                      <p>
+                        <SELECT name="mercado" multiple = "multiple" SIZE=6 id="mercado" class = "listillas"> 
+                          <OPTION VALUE="ALL" selected>ALL</OPTION>
+                        </SELECT>
+                      </p>
                     </div>
-            
-                </form>
+        
+                    <table class="botones" cellpadding="15">
+                      <tr>
+                        <td><input type = "button" value = "ALL" id = "bMercadoAll" class = "todos"/></td>
+                        <td><input type = "button" value = "NONE" id = "bMercadoNone" class = "ninguno"/></td>
+                        <td><input type = "submit" value = "REFRESH" id = "bMercadoRef" class = "refresca"/></td>
+                      </tr>
+                    </table>
+                  </form>
+
+                  <br>
+                  <br>
+
+                  <form method = "get" action = "{% url 'refreshFamilias' %}" id = "formFamily">
+                    <div id = "divFamilia">
+                      <p class="textoLista">FAMILY</p>
+                      <p>
+                        <SELECT name="familia" multiple = "multiple" SIZE=6 id="familia" class = "listillas"> 
+                          <OPTION VALUE="ALL" selected>ALL</OPTION>
+                        </SELECT>
+                      </p>
+                    </div>
+
+
+                    <table class="botones" cellpadding="15">
+                      <tr>
+                        <td><input type = "button" value = "ALL" id = "bFamiliaAll" class = "todos"/></td>
+                        <td><input type = "button" value = "NONE" id = "bFamiliaNone" class = "ninguno"/></td>
+                        <td><input type = "submit" value = "REFRESH" id = "bFamiliaRef" class = "refresca"/></td>
+                      </tr>
+                    </table>
+                  </form>
+
+                  <br>
+                  <br>
+
+                  <form method = "get" action = "{% url 'refreshBrands' %}" id = "formBrands">
+                    <div id = "divBrands">
+                      <p class="textoLista">BRANDS</p>
+                      <p>
+                        <SELECT name="brands" multiple = "multiple" SIZE=6 id="brands" class = "listillas"> 
+                          <OPTION VALUE="ALL" selected>ALL</OPTION>
+                        </SELECT>
+                      </p>
+                    </div>
+
+
+                    <table class="botones" cellpadding="15">
+                      <tr>
+                        <td><input type = "button" value = "ALL" id = "bBrandsAll" class = "todos"/></td>
+                        <td><input type = "button" value = "NONE" id = "bBrandsNone" class = "ninguno"/></td>
+                        <td><input type = "submit" value = "REFRESH" id = "bBrandsRef" class = "refresca"/></td>
+                      </tr>
+                    </table>
+                  </form>
+
+                  <br>
+                  <br>
+
+
+                  <p class="textoLista">SKU</p>
+                  <p>
+                    <SELECT name="sku" multiple = "multiple" SIZE=6 id="sku" class = "listillas"> 
+                      <OPTION VALUE="ALL" selected>ALL</OPTION>
+                    </SELECT>
+                  </p>
+
+
+
+                  <table class="botones" cellpadding="15">
+                    <tr>
+                      <td><input type = "button" value = "ALL" id = "bSkuAll" class = "todos"/></td>
+                      <td><input type = "button" value = "NONE" id = "bSkuNone" class = "ninguno"/></td>
+                    </tr>
+                  </table>
+
+                  <br>
+                  <br>
+
+
+                  <form  method="get" action = "{% url 'consultaPrecios' %}" id = "consultaPrice">
+
+                    <table class="botones" cellpadding="15">
+                      <tr>
+                        <td><input type = "submit" value="CONSULTA" id = "staz" name = "staz"/></td>
+                      </tr>
+                    </table>
+          
+                  </form>
+
+                </div>
 
             </div><!-- Fin de Side Bar -->            
             
     {% endblock %}
 
     {% block javascript %}
+
       <script>
         $("#titulo").html("PRICE ANALYSIS TOOL<br /><span id='tspan'>PRICE ANALYSIS</span>");
       </script>
+
     {% endblock %}
 
 

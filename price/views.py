@@ -14,6 +14,8 @@ import numpy as np
 import csv
 from formulario import formulario
 from precioFarmacia import precioFarmacia
+from dbConect import dbConect
+import datetime
 
 import rpy2.robjects as ro
 from rpy2.robjects.packages import importr
@@ -40,8 +42,224 @@ def priceAnalysis(request):
 
 
         
-#Procedimientos        
+#Procedimientos -------------------------------------------------------------------------------------------------        
 
+#Para refrescar las listas
+
+def refreshTienda(request):
+
+    df = pd.read_sql('select * from catdosis', con = dbConect.ehost())
+    mercados = sorted(list(set(df['MERCADO'].tolist())))
+    #mercados = list(set(df[df['Farmacia'].isin(tienda)].tolist()))    
+    
+    return JsonResponse({'mercados': mercados})
+    
+
+def refreshMercado(request):
+    
+    mercados = request.GET.getlist('mercado')
+    
+    if mercados[0] == "ALL" or len(mercados) == 0:
+        familias = ['ALL']
+    else:    
+        df = pd.read_sql('select * from catdosis', con = dbConect.ehost())    
+        mercadosDF = df[df['MERCADO'].isin(mercados)]                        
+        familias = sorted(list(set(mercadosDF['FAMILIA'].tolist())))    
+        
+    return JsonResponse({'familias': familias})
+    
+def refreshFamilias(request):
+
+    mercados = request.GET.getlist('mercado')
+    familias = request.GET.getlist('familia')
+    
+    if mercados[0] == "ALL" or familias[0] == "ALL" or len(mercados) == 0 or len(familias) == 0:
+        marcas = ['ALL']
+    else:    
+        df = pd.read_sql('select * from catdosis', con = dbConect.ehost())    
+        familiasDF = df[df['MERCADO'].isin(mercados) & df['FAMILIA'].isin(familias)]      
+                      
+        marcas = sorted(list(set(familiasDF['MARCA'].tolist())))    
+        
+    return JsonResponse({'marcas': marcas})
+    
+
+def refreshBrands(request):
+
+    mercados = request.GET.getlist('mercado')
+    familias = request.GET.getlist('familia')
+    marcas = request.GET.getlist('brands')
+    
+    if mercados[0] == "ALL" or familias[0] == "ALL" or marcas[0] == "ALL" or len(mercados) == 0 or len(familias) == 0 or len(marcas) == 0:
+        sku = ['ALL']
+    else:    
+        df = pd.read_sql('select * from catdosis', con = dbConect.ehost())    
+        marcasDF = df[df['MERCADO'].isin(mercados) & df['FAMILIA'].isin(familias) & df['MARCA'].isin(marcas)]      
+                      
+        sku = sorted(list(set(marcasDF['HOMOLOGADO'].tolist())))    
+        
+    return JsonResponse({'sku': sku})
+
+    
+
+def consultaPrecios(request):
+    fechaIni = request.GET.get('initial-date')
+    fechaFin = request.GET.get('last-date')
+    tipoChart = request.GET.get('chart-style')
+    tipoMedida = request.GET.get('measure')
+    tipoItem = request.GET.get('nom-item')
+    verChart = request.GET.get('chart-views')
+    
+    
+    tienda = request.GET.getlist('tienda')
+    mercado = request.GET.getlist('mercado')
+    familia = request.GET.getlist('familia')
+    marcas = request.GET.getlist('brands')
+    sku = request.GET.getlist('sku')
+    
+    df = pd.read_sql('select * from precios', con = dbConect.ehost())    
+    
+
+    # Filtro fechas inicial y final    
+    if fechaIni == "" or fechaFin == "":
+        f1 = df.copy()
+    else:
+
+        lfechaIni = fechaIni.split("-")    
+        dfechaIni = datetime.date(int(lfechaIni[0]), int(lfechaIni[1]), int(lfechaIni[2]))
+        
+        lfechaFin = fechaFin.split("-")    
+        dfechaFin = datetime.date(int(lfechaFin[0]), int(lfechaFin[1]), int(lfechaFin[2]))
+        
+        
+        #fecha = [dfechaIni, dfechaFin]
+        f1 = df[(df['fecha'] >= dfechaIni) & (df['fecha'] <= dfechaFin)]
+        #f1 = df[df['fecha'].isin(fecha)]   
+
+
+                
+    # Filtro tienda    
+    if len(tienda) == 0:
+        f2 = f1.copy()
+    else:
+        f2 = f1[f1['Farmacia'].isin(tienda)]
+
+    del f1
+    
+    #Filtro mercado
+    if len(mercado) == 0 or mercado[0] == "ALL":
+        f3 = f2.copy()         
+    else:
+        f3 = f2[f2['MERCADO'].isin(mercado)]
+    
+    del f2
+    
+    
+    #Filtro familias
+    if len(familia) == 0 or familia[0] == "ALL":
+        f4 = f3.copy()         
+    else:
+        f4 = f3[f3['FAMILIA'].isin(familia)]
+    
+    del f3
+
+    
+    #Filtro marcas
+    if len(marcas) == 0 or marcas[0] == "ALL":
+        f5 = f4.copy()         
+    else:
+        f5 = f4[f4['MARCA'].isin(marcas)]
+    
+    del f4
+    
+
+    #Filtro sku
+    if len(sku) == 0 or sku[0] == "ALL":
+        f6 = f5.copy()         
+    else:
+        f6 = f5[f5['HOMOLOGADO'].isin(sku)]
+    
+    del f5
+
+    #Hacemos las tablas pivote 
+    
+    if tipoItem == "MARKET":
+        variable = "MERCADO"
+    elif tipoItem == "LABORATORY":
+        variable = "LABORATORIO"
+    elif tipoItem == "FAMILY":
+        variable = "FAMILIA"
+    elif tipoItem == "BRAND":
+        variable = "MARCA"
+    elif tipoItem == "SKU":
+        variable = "HOMOLOGADO"
+
+    if verChart == "ITEM - STORE":
+        take = [variable, 'Farmacia']
+    else:
+        take = ['Farmacia', variable]
+        
+
+    if tipoMedida == "LOCAL PRICE":
+        medidas = 'Precio'
+    elif tipoMedida == "SINGLE DOSES":
+        medidas = "ppack"
+    elif tipoMedida == "DOT":
+        medidas = "dots"
+        
+        
+    matriz = []
+
+    tablon = pd.pivot_table(f6, index = take, columns = 'fecha', values = medidas, aggfunc=np.mean, dropna = True, fill_value = 0, margins = True)   
+    tablon = tablon.reset_index()
+    tablon = tablon.iloc[:, :-1] 
+    tablon = tablon[:-1]     
+    tablon = tablon.round(2)
+    
+    print(tablon)
+    
+    
+    ncolumna = list(tablon)
+    lista = list(set(tablon[ncolumna[0]].tolist()))
+
+    for i in range(len(lista)):
+        # Hacemos filtro para cada elemento de la lista
+        tabla = tablon[tablon[ncolumna[0]].isin([lista[i]])] 
+        
+        l1 = list(tabla)                       
+        t1  = pd.DataFrame()
+        
+        for x in xrange(1, len(l1)):
+            t1[l1[x]] = tabla[l1[x]]
+
+
+        #Cambiamos las fechas a cadenas
+        
+        columns = list(t1)
+        
+        for j in xrange(1, len(columns)):
+            deits = unicode(columns[j])
+            columns[j] = deits
+        
+        t1 = t1.set_index(take[1])
+        t1 = t1.transpose()
+        
+        columns = list(t1)
+        columns.insert(0, 'Date')
+
+        rows = [[i for i in row] for row in t1.itertuples()]
+        rows.insert(0, columns)
+    
+        matriz.append(rows)
+    
+        
+    return JsonResponse({'matriz': matriz, 'elementos': lista, 'tchart': tipoChart})
+
+    
+    
+    
+    
+    
 def pricescrap(request):
 
     #data = [['saludo', 'dato'], ['hola', 1], ['adios', 2], ['bye', 3]]

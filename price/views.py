@@ -29,7 +29,7 @@ importr(str("forecast"))
 import json
 
 
-print('adios Vegueta')
+print('adios son gokku')
 
 # Create your views here.
 

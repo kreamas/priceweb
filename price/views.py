@@ -29,6 +29,8 @@ importr(str("forecast"))
 import json
 
 
+print('adios Vegueta')
+
 # Create your views here.
 
 #Links

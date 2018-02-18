@@ -1,4 +1,4 @@
-
+#!/usr/bin/python2.7
 import pandas as pd
 from dbConect import dbConect
 import datetime
